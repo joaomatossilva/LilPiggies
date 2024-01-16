@@ -1,0 +1,11 @@
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/bin/Debug/net8.0/LilPiggies.Core.deps.json
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/bin/Debug/net8.0/LilPiggies.Core.dll
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/bin/Debug/net8.0/LilPiggies.Core.pdb
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/obj/Debug/net8.0/LilPiggies.Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/obj/Debug/net8.0/LilPiggies.Core.AssemblyInfoInputs.cache
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/obj/Debug/net8.0/LilPiggies.Core.AssemblyInfo.cs
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/obj/Debug/net8.0/LilPiggies.Core.csproj.CoreCompileInputs.cache
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/obj/Debug/net8.0/LilPiggies.Core.dll
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/obj/Debug/net8.0/refint/LilPiggies.Core.dll
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/obj/Debug/net8.0/LilPiggies.Core.pdb
+/home/joaomatossilva/Farfetch/joaomatos.silva/LilPiggies/LilPiggies.Core/obj/Debug/net8.0/ref/LilPiggies.Core.dll
