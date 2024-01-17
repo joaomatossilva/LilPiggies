@@ -1,5 +1,8 @@
 namespace LilPiggies.DbModel;
 
+using Microsoft.EntityFrameworkCore;
+
+[PrimaryKey(nameof(UserId), nameof(Day))]
 public class UserDayGame
 {
     public string UserId { get; set; }

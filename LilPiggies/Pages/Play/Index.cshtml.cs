@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace LilPiggies.Pages.Play;
 
+using DbModel;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 public class Index : PageModel
 {
@@ -17,7 +19,7 @@ public class Index : PageModel
     public string Solution { get; set; }
 
     //temp
-    public const string UserId = "123";
+    public const string UserId = "122";
 
     public Index(IMediator mediator)
     {
@@ -34,7 +36,7 @@ public class Index : PageModel
 
     public async Task<IActionResult> OnPost()
     {
-        await mediator.Send(new Command {Solution = Solution});
+        await mediator.Send(new Command {UserId = UserId, Solution = Solution});
         return RedirectToPage("Index");
     }
 
@@ -50,36 +52,68 @@ public class Index : PageModel
         public bool Completed { get; set; }
     }
 
-    private static int attempts = 0;
-    private static bool finished = false;
     private const int MaxAttempts = 5;
 
-    public class QueryHandler : IRequestHandler<Query, PlayViewModel>
+    public class QueryHandler(AppDbContext dbContext) : IRequestHandler<Query, PlayViewModel>
     {
         private static readonly Guid BoardId = Guid.NewGuid();
 
-        public Task<PlayViewModel> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PlayViewModel> Handle(Query request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(new PlayViewModel
+            var day = DateOnly.FromDateTime(DateTime.UtcNow.Date);
+            var userDay = await dbContext.UserDayGames.FirstOrDefaultAsync(uDay =>
+                uDay.UserId == request.UserId && uDay.Day == day, cancellationToken);
+
+            if (userDay is null)
             {
-                AvailableAttempts = MaxAttempts - attempts,
-                BoardId = BoardId,
-                Completed = finished
-            });
+                userDay = new UserDayGame
+                {
+                    UserId = request.UserId,
+                    Day = day,
+                    BoardId = BoardId,
+                    Attempts = 0,
+                    Completed = false
+                };
+                dbContext.UserDayGames.Add(userDay);
+                await dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            return new PlayViewModel
+            {
+                AvailableAttempts = MaxAttempts - userDay.Attempts,
+                BoardId = userDay.BoardId,
+                Completed = userDay.Completed
+            };
         }
     }
 
     public class Command : IRequest
     {
+        public string UserId { get; set; }
         public string Solution { get; set; }
     }
 
-    public class CommandHandler : IRequestHandler<Command>
+    public class CommandHandler(AppDbContext dbContext) : IRequestHandler<Command>
     {
-        public Task Handle(Command request, CancellationToken cancellationToken)
+        public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            attempts++;
-            return Task.CompletedTask;
+            var day = DateOnly.FromDateTime(DateTime.UtcNow.Date);
+            var userDay = await dbContext.UserDayGames.FirstOrDefaultAsync(uDay =>
+                uDay.UserId == request.UserId && uDay.Day == day, cancellationToken);
+
+            if (userDay is null)
+            {
+                return;
+            }
+
+            if (userDay.Attempts >= MaxAttempts)
+            {
+                //if we're hitting this, we're getting abused
+                return;
+            }
+
+            userDay.Attempts++;
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
