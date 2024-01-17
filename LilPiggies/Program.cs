@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+var connectionString = builder.Configuration.GetConnectionString("default");
+//builder.Services.AddSqlServer<DbContext>(connectionString);
+
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<Program>());
 
 var app = builder.Build();
 

@@ -1,0 +1,35 @@
+@page
+@model LilPiggies.Pages.Play.Index
+
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div>
+    <h1>Play</h1>
+</div>
+
+@if (!Model.Completed)
+{
+    @if (Model.AvailableAttempts > 0)
+    {
+        <div>
+            <p>You still have @Model.AvailableAttempts attempts to solve the puzzle.</p>
+            <form method="post">
+                <button>Submit</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p>I'm sorry. You have no more tries left.</p>
+        </div>
+    }
+}
+else
+{
+    <div>
+        <p>Congratulations! You solved the puzzle!</p>
+    </div>
+}
